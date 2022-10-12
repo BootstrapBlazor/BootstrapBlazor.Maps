@@ -14,7 +14,7 @@ https://blazor.app1.es/maps
 
 2._Imports.razor 文件 或者页面添加 添加组件库引用
 
-```@using AmeBlazor.Components```
+```@using BootstrapBlazor.Components```
 
 
 3.razor页面
