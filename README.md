@@ -10,7 +10,7 @@ https://blazor.app1.es/maps
 
 1.nuget包
 
-```Densen.Component.Blazor```
+```BootstrapBlazor.Maps```
 
 2._Imports.razor 文件 或者页面添加 添加组件库引用
 
