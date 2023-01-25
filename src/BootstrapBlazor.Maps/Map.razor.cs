@@ -50,7 +50,7 @@ public partial class Map : IAsyncDisposable
         if (firstRender)
         {
             key = GoogleKey ?? (config != null ? config["GoogleKey"] : null) ?? "abcd";
-            module = await JS.InvokeAsync<IJSObjectReference>("import", "./_content/BootstrapBlazor.Maps/lib/google/map.js");
+            module = await JS.InvokeAsync<IJSObjectReference>("import", "./_content/BootstrapBlazor.Maps/lib/google/map.js" + "?v=" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version);
             while (!(await Init()))
             {
                 await Task.Delay(500);
