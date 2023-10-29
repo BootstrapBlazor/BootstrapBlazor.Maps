@@ -7,9 +7,6 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Configuration;
 using Microsoft.JSInterop;
-using System;
-using System.ComponentModel;
-using System.Data;
 using System.Diagnostics.CodeAnalysis;
 
 namespace BootstrapBlazor.Components;
@@ -18,8 +15,8 @@ namespace BootstrapBlazor.Components;
 /// </summary>
 public partial class Map : IAsyncDisposable
 {
-    [Inject][NotNull] IJSRuntime? JS { get; set; }
-    [Inject] IConfiguration? config { get; set; }
+    [Inject][NotNull] private IJSRuntime? JS { get; set; }
+    [Inject] private IConfiguration? config { get; set; }
 
     /// <summary>
     /// 获得/设置 错误回调方法
@@ -40,7 +37,7 @@ public partial class Map : IAsyncDisposable
     [Parameter]
     public string Style { get; set; } = "height:700px;width:100%;";
 
-    ElementReference map { get; set; }
+    private ElementReference map { get; set; }
 
     private IJSObjectReference? module;
     private string key = String.Empty;
@@ -49,7 +46,7 @@ public partial class Map : IAsyncDisposable
     {
         if (firstRender)
         {
-            key = GoogleKey ?? (config != null ? config["GoogleKey"] : null) ?? "abcd";
+            key = GoogleKey ?? (config?["GoogleKey"]) ?? "abcd";
             module = await JS.InvokeAsync<IJSObjectReference>("import", "./_content/BootstrapBlazor.Maps/lib/google/map.js" + "?v=" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version);
             while (!(await Init()))
             {
