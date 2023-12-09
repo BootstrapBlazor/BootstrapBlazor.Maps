@@ -15,7 +15,7 @@ namespace BootstrapBlazor.Components;
 /// </summary>
 public partial class Map : IAsyncDisposable
 {
-    [Inject][NotNull] private IJSRuntime? JS { get; set; }
+    [Inject][NotNull] private IJSRuntime? JSRuntime { get; set; }
     [Inject] private IConfiguration? config { get; set; }
 
     /// <summary>
@@ -47,7 +47,7 @@ public partial class Map : IAsyncDisposable
         if (firstRender)
         {
             key = GoogleKey ?? (config?["GoogleKey"]) ?? "abcd";
-            Module = await JS.InvokeAsync<IJSObjectReference>("import", "./_content/BootstrapBlazor.Maps/lib/google/map.js" + "?v=" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version);
+            Module = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/BootstrapBlazor.Maps/lib/google/map.js" + "?v=" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version);
             while (!(await Init()))
             {
                 await Task.Delay(500);
