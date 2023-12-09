@@ -39,7 +39,7 @@ public partial class Map : IAsyncDisposable
 
     private ElementReference map { get; set; }
 
-    private IJSObjectReference? module;
+    private IJSObjectReference? Module { get; set; }
     private string key = String.Empty;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -47,27 +47,27 @@ public partial class Map : IAsyncDisposable
         if (firstRender)
         {
             key = GoogleKey ?? (config?["GoogleKey"]) ?? "abcd";
-            module = await JS.InvokeAsync<IJSObjectReference>("import", "./_content/BootstrapBlazor.Maps/lib/google/map.js" + "?v=" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version);
+            Module = await JS.InvokeAsync<IJSObjectReference>("import", "./_content/BootstrapBlazor.Maps/lib/google/map.js" + "?v=" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version);
             while (!(await Init()))
             {
                 await Task.Delay(500);
             }
 
-            //await module.InvokeVoidAsync("initMaps"  );
+            //await Module.InvokeVoidAsync("initMaps"  );
         }
     }
 
 
-    public async Task<bool> Init() => await module!.InvokeAsync<bool>("addScript", new object?[] { key, map, null, null, null });
+    public async Task<bool> Init() => await Module!.InvokeAsync<bool>("addScript", new object?[] { key, map, null, null, null });
 
-    public async Task OnBtnClick() => await module!.InvokeVoidAsync("addScript", new object?[] { key, map, null, null, null });
+    public async Task OnBtnClick() => await Module!.InvokeVoidAsync("addScript", new object?[] { key, map, null, null, null });
 
     async ValueTask IAsyncDisposable.DisposeAsync()
     {
-        if (module is not null)
+        if (Module is not null)
         {
-            //await module.InvokeVoidAsync("destroy", Options);
-            await module.DisposeAsync();
+            //await Module.InvokeVoidAsync("destroy", Options);
+            await Module.DisposeAsync();
         }
     }
 }
