@@ -15,7 +15,10 @@ namespace BootstrapBlazor.Components;
 /// </summary>
 public partial class Map : IAsyncDisposable
 {
-    [Inject][NotNull] private IJSRuntime? JSRuntime { get; set; }
+    [Inject]
+    [NotNull]
+    private IJSRuntime? JSRuntime { get; set; }
+
     [Inject] private IConfiguration? config { get; set; }
 
     /// <summary>
@@ -37,7 +40,10 @@ public partial class Map : IAsyncDisposable
     [Parameter]
     public string Style { get; set; } = "height:700px;width:100%;";
 
-    private ElementReference map { get; set; }
+    /// <summary>
+    /// UI界面元素的引用对象
+    /// </summary>
+    private ElementReference Element { get; set; }
 
     private IJSObjectReference? Module { get; set; }
     private string key = String.Empty;
@@ -58,9 +64,9 @@ public partial class Map : IAsyncDisposable
     }
 
 
-    public async Task<bool> Init() => await Module!.InvokeAsync<bool>("addScript", new object?[] { key, map, null, null, null });
+    public async Task<bool> Init() => await Module!.InvokeAsync<bool>("addScript", new object?[] { key, Element, null, null, null });
 
-    public async Task OnBtnClick() => await Module!.InvokeVoidAsync("addScript", new object?[] { key, map, null, null, null });
+    public async Task OnBtnClick() => await Module!.InvokeVoidAsync("addScript", new object?[] { key, Element, null, null, null });
 
     async ValueTask IAsyncDisposable.DisposeAsync()
     {
